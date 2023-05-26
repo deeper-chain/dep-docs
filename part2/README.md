@@ -47,6 +47,41 @@ Then you can access the [DEP contract page](https://evm.deeper.network/address/0
 
 You can check available calls on the `Read Contract` and `Write Contract` tab.
 
-## SOL
+## Solidity
+
+[Solidity](https://soliditylang.org/) is a high-level programming language used for writing smart contracts on the Ethereum or EVM-compatible blockchains. It is similar to JavaScript in its syntax and is designed to be both readable and efficient for blockchain programming.
+
+Solidityis a statically typed language, which means that the data types of variables are determined at compile-time rather than at runtime. This makes it easier to catch errors early on in the development process.
+
+One of the unique features of Solidity is its ability to interact with the Ethereum Virtual Machine (EVM), which is the runtime environment for smart contracts on the Ethereum blockchain. Solidity contracts are compiled into EVM bytecode, which can be executed by nodes on the network. This makes it possible to create decentralized applications (dApps) that run entirely on the blockchain.
+
+Solidity is also an object-oriented programming language, which means that it uses objects to represent data and functionality. Objects can be created from classes, which define the properties and methods of the object. Solidity supports inheritance, encapsulation, and polymorphism, which are key concepts in object-oriented programming
+
+One of the most popular tools for developing Solidity contracts is Remix. Below is a  [simple example](https://remix.ethereum.org/?#language=solidity&version=soljson-v0.8.18+commit.87f61d96.js&code=Ly8gU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IEdQTC0zLjAKcHJhZ21hIHNvbGlkaXR5ID49MC40LjE2IDwwLjkuMDsKCmNvbnRyYWN0IFNpbXBsZVN0b3JhZ2UgewogICAgdWludCBzdG9yZWREYXRhOwoKICAgIGZ1bmN0aW9uIHNldCh1aW50IHgpIHB1YmxpYyB7CiAgICAgICAgc3RvcmVkRGF0YSA9IHg7CiAgICB9CgogICAgZnVuY3Rpb24gZ2V0KCkgcHVibGljIHZpZXcgcmV0dXJucyAodWludCkgewogICAgICAgIHJldHVybiBzdG9yZWREYXRhOwogICAgfQp9&lang=en&optimize=false&runs=200&evmVersion=null)  written in Solidity:
+```solidity
+// SPDX-License-Identifier: GPL-3.0
+pragma solidity >=0.4.16 <0.9.0;
+
+contract SimpleStorage {
+    uint storedData;
+
+    function set(uint x) public {
+        storedData = x;
+    }
+
+    function get() public view returns (uint) {
+        return storedData;
+    }
+}
+```
+
+You can compile your contract like below:
+
+![compile](./compile.png)
+
+Then deploy the contract in test enviroment:
+
+![deploy](./deploy.png)
+
 
 ## Rust
