@@ -84,4 +84,12 @@ Then deploy the contract in test enviroment:
 ![deploy](./deploy.png)
 
 
-## Rust
+## Rust(optional)
+
+The is an official DEP API bindings written in Rust, but you can also use the blockchain browser to call all DEP APIs.
+
+To get started with Rust, one can visit the [official rust website](https://www.rust-lang.org/learn/get-started) and follow the installing steps.
+
+To learn the basics about Rust, you can follow the [book](https://doc.rust-lang.org/book/), but for DEP developement, you will only need to read the first `6` chapters then you will be good to go.
+
+![rust](./rust.png)
