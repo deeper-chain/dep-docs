@@ -1,9 +1,6 @@
 # How to build DEP APP
 
-# 1. APP developement
-
-(We will use decentralized email as an example)
-
+# 1. Decentralized email
 （1 clone the code
 
 git clone [https://github.com/difttt/docker-task](https://github.com/difttt/docker-task/tree/send_mail_with_cmd)
@@ -97,6 +94,54 @@ url, options, maxRunNum and maintainBlocks varies by your inputs
 Tips: 
 
 If you are using your own Deeper device, you can assign the task to your device by using `nNodespecifiedAddressTask` and specify the `receivers` to your Deeper device's eth address.
+
+---
+
+# Oracle price
+Oracle price is a program that gets the price of a given coin from some trading market, then feed it to the chain.
+
+One way of doing this is to use a price council which select a bunch of servers as council members, they are the only ones that can upload the price.
+
+However loot council is not excatly decentralized and vulnerable to hackers.
+
+Dep on the other hand, one cannot even predict the device that is running the oracle price program, so it's very difficult for hackers to intercept the process.
+
+## APP developement
+
+First we need to get the price from the market, something like an http request:
+```rust
+async fn get_gateio_price() -> Result<u64, Box<dyn std::error::Error>> {
+    log::info!("Using gateio price");
+    let now = timestamp() / 1000;
+    let resp =
+        reqwest::get(format!("https://www.gate.io/json_svr/query/?u=10&c=9349111&type=tvkline&symbol=dpr_usdt&from={}&to={}&interval=1800", now-24*60*60*1000, now))
+            .await?
+            .text()
+            .await?;
+    let prices = resp.split("\n").collect::<Vec<&str>>();
+    let price = prices[prices.len() - 2].split(",").collect::<Vec<&str>>();
+    Ok((price[4].parse::<f32>()? * 10e17).round() as u64)
+}
+```
+
+Then you post it to your endpoint:
+```rust
+let sub = sub_client::Substrate::new(endpoint).await.unwrap();
+if let Err(e) = sub
+    .set_dpr_price(
+        price as u128,
+        sub_client::polkadot::runtime_types::primitive_types::H160(buffer),
+        operator_substrate_phrase,
+    )
+    .await
+{
+    log::error!("Failed to submit dpr price: {:?}", e);
+    return Ok(());
+}
+```
+You can also use an http endpoint to receive the prices, then apply some price filters to the prices.
+
+Once the APP is done, just build the docker image and follow the steps above to send your new oracle price tasks.
 
 # Refer
 
