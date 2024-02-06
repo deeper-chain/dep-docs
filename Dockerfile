@@ -1,16 +1,16 @@
-FROM node:14.16-alpine
+FROM rust:1.75 as builder
 
-# Create app directory
-WORKDIR /app
+WORKDIR /book
 
-# Install app dependencies
-RUN yarn global add gitbook-cli@2.2.0
+RUN cargo install mdbook
 
-# Bundle app source
 COPY . .
 
-RUN gitbook build .
+RUN ls -alh . && mdbook build
 
-EXPOSE 4000
+FROM nginx:1.21-alpine
 
-CMD ["gitbook", "serve"]
+COPY --from=builder /book/book /usr/share/nginx/html
+
+EXPOSE 80
+
